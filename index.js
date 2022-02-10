@@ -1,21 +1,42 @@
 const app = require('express')()
 const http = require('http').createServer(app)
 const redis = require('redis');
+const socketio = require('socket.io')
+const port = process.env.PORT || 8001
+const io = socketio(http);
 const client = redis.createClient({
     host: 'localhost',
-    port: 4500
+    port: 4600
 });
-
 client.connect();
 
 client.on('error', err => console.log('REDIS ERROR: ', err));
 
 client.on("connect", ()=> console.log("REDIS CLIENT CONNECTED TO SERVER"));
+io.on("connection",(socket) => {
+    socket.on("Data1",( speed ,accuracy)=>{
+        if(speed!=null && accuracy!=null){
+            let scores=(speed+accuracy)/1000
+            client.ZADD("scores", {score: scores, value: 'drift'});
+            client.ZADD("speeds",{score:speed, value:'drift'});
+            client.ZADD("accuracy",{score:accuracy,value:'drift'});
+            console.log("Contacted")
+            data() 
+            if (socket.broadcast.emit("OurData",personInfo)) {
+                console.log("Data emitted")
+                console.log("Emitted",personInfo)
+                personInfo = []
+            } 
+        } 
+    })
+    socket.on("disconnect",()=>{
+console.log("Disconnected");
+    })
+  });
 
-client.ZADD("scores", {score: 80, value: 'player2'});
-client.ZADD("speeds",{score:24, value:'player2'});
-client.ZADD("accuracy",{score:9,value:'player2'});
 let personInfo=[];
+   
+
 const data= async()=>{
     let scoreresult = await client.ZRANGE_WITHSCORES('scores', 0,-1)
     let speedsresult = await client.ZRANGE_WITHSCORES('speeds', 0,-1)
@@ -31,10 +52,9 @@ const data= async()=>{
     }  
        personInfo.push(Myinfo);
    }
-   console.log("Our winners",personInfo);
+  
 }
-data();
 
-http.listen(5000,function (){
-    console.log("Server listening on port 5000")
+http.listen(port,function (){
+    console.log(`Server listening on port ${port}`)
 })
