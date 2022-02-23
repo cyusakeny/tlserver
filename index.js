@@ -9,9 +9,7 @@ const client = redis.createClient({
     port: 4600
 });
 client.connect();
-
 client.on('error', err => console.log('REDIS ERROR: ', err));
-
 client.on("connect", ()=> console.log("REDIS CLIENT CONNECTED TO SERVER"));
 io.on("connection",(socket) => {
     socket.on("Data1",( speed ,accuracy)=>{
@@ -22,12 +20,15 @@ io.on("connection",(socket) => {
             client.ZADD("accuracy",{score:accuracy,value:'drift'});
             console.log("Contacted")
             data() 
-            if (socket.broadcast.emit("OurData",personInfo)) {
+            if (socket.to("room1").emit("OurData",personInfo)) {
                 console.log("Data emitted")
                 console.log("Emitted",personInfo)
                 personInfo = []
             } 
         } 
+    })
+    socket.on("CreateRoom",(id)=>{
+        socket.join("room"+id)
     })
     socket.on("disconnect",()=>{
 console.log("Disconnected");
