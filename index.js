@@ -12,7 +12,7 @@ client.connect();
 client.on('error', err => console.log('REDIS ERROR: ', err));
 client.on("connect", ()=> console.log("REDIS CLIENT CONNECTED TO SERVER"));
 io.on("connection",(socket) => {
-    socket.on("Data1",( speed ,accuracy)=>{
+    socket.on("Data1",( speed ,accuracy,roomid)=>{
         if(speed!=null && accuracy!=null){
             let scores=(speed+accuracy)/1000
             client.ZADD("scores", {score: scores, value: 'drift'});
@@ -20,7 +20,7 @@ io.on("connection",(socket) => {
             client.ZADD("accuracy",{score:accuracy,value:'drift'});
             console.log("Contacted")
             data() 
-            if (socket.to("room1").emit("OurData",personInfo)) {
+            if (socket.to(roomid).emit("OurData",personInfo)) {
                 console.log("Data emitted")
                 console.log("Emitted",personInfo)
                 personInfo = []
