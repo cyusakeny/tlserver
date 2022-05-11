@@ -10,7 +10,7 @@ const server = new RedisServer({
 server.open()
 .then(()=> {
     console.log(`Redis Server started on port ${PORT}`);
-    server.on("connection", (stream)=> {
+    server.on("connection", ()=> {
         console.log("A NEW REDIS CLIENT CONNECTED");
     });
 })
