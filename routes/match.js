@@ -30,3 +30,4 @@ router.delete('/delete/:id',async(req,res)=>{
     const deleteuser = await matchservice.RemoveMatch(req.params.id)
     res.send('User deleted').status(201)
 })
+module.exports = router

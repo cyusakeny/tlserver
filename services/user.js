@@ -47,3 +47,10 @@ module.exports.DeleteUser =  async(id)=>{
       })
       return user;
 }
+module.exports.Login = async(email,password)=>{
+  return model.user.findOne({where:{email:email,password:password}}).then(user=>{
+    return user
+  }).catch(error=>{
+    console.log(error)
+  })
+}

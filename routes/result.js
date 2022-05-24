@@ -13,3 +13,4 @@ router.post('/add/:user/:match',async(req,res)=>{
     const newresult = await resultService.AddResult(req.params.match,req.params.user,req.body.score)
     res.send(JSON.parse(JSON.stringify(newresult))).status(201)
 })
+module.exports = router

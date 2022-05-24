@@ -16,6 +16,6 @@ if (process.env.NODE_ENV==='development') {
   app.use('/users',require('./routes/user'))
   app.use('/match',require('./routes/match'))
   app.use('/competition',require('./routes/competition'))
-  app.use()
+  app.use('/result',require('./routes/result'))
 const PORT = process.env.PORT || 5000
 app.listen(PORT,console.log(`Server running on port ${PORT}`))

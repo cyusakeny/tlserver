@@ -20,3 +20,4 @@ router.put('/update/:id',async(req,res)=>{
     const updateProgress = await progressService.UpdateProgress(req.params.id,level)
     res.send(JSON.parse(JSON.stringify(updateProgress))).status(201)
 })
+module.exports = router

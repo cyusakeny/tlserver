@@ -34,3 +34,4 @@ router.put('/update/:id',async(req,res)=>{
     const updateCompetition = await competitionService.UpdateCompetition(req.params.id,competition)
     res.send(JSON.parse(JSON.stringify(updateCompetition))).status(201)
 })
+module.exports = router
