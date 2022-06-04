@@ -2,7 +2,6 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const redis = require('redis');
 const socketio = require('socket.io')
-const port = process.env.PORT || 8001
 const io = socketio(http);
 const client = redis.createClient({
     host: 'localhost',
@@ -13,12 +12,12 @@ client.on('error', err => console.log('REDIS ERROR: ', err));
 client.on("connect", ()=> console.log("REDIS CLIENT CONNECTED TO SERVER"));
 io.on("connection",(socket) => {
     socket.on("Data1",( speed ,accuracy,roomid)=>{
+        console.log("Hello here to stay")
         if(speed!=null && accuracy!=null){
             let scores=(speed+accuracy)/1000
             client.ZADD("scores", {score: scores, value: 'drift'});
             client.ZADD("speeds",{score:speed, value:'drift'});
             client.ZADD("accuracy",{score:accuracy,value:'drift'});
-            console.log("Contacted")
             data() 
             if (socket.to(roomid).emit("OurData",personInfo)) {
                 console.log("Data emitted")

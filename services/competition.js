@@ -7,7 +7,7 @@ module.exports.AddCompetition = async(userId,competition)=>{
    prize:competition.prize,
    requirements:competition.requirements,
    userId:userId
-    }).then((competition)=>{return competition}).catch((err)=>{console.log(err)})
+    }).then((competition)=>{return competition}).catch((err)=>{console.log('eroor:',err)})
 }
 module.exports.RemoveCompetition = async(compId)=>{
     return model.competition.destroy({

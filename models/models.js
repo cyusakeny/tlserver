@@ -15,9 +15,13 @@ const Match= db.define('match',{
         }
         },
     status:{
-        type:Sequelize.ENUM('UPCOMING','LIVE','DONE'),
+        type:Sequelize.ENUM("LIVE","UPCOMING","DONE"),
         allowNull:false
         },
+    time:{
+        type:Sequelize.TIME,
+        allowNull:false
+    }
 })
 const User = db.define('user',{
     username:{
@@ -133,7 +137,7 @@ User.hasOne(Progress,{as:'progress',
 foreignKey:{name:'userId',allowNull:false,isUUID:4}
 })
 Progress.belongsTo(User,{foreignKey:'userId'});
-Match.belongsTo(Competition,{foreignKey:'compid',
+Match.belongsTo(Competition,{foreignKey:'compId',
 as:'competition'
 })
 Match.belongsToMany(User, { through: Result });
@@ -144,7 +148,9 @@ User.belongsToMany(Match, { through: Result });
 Competition.belongsTo(User,{ 
     foreignKey:"userId",
     as: "Creater" })
-Competition.hasMany(Match,{as:'matches'});
+Competition.hasMany(Match,{as:'matches',foreignKey:{
+    name:'compId',allowNull:false,isUUID:4
+}});
 module.exports.user = User
 module.exports.match = Match
 module.exports.result = Result
