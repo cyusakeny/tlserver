@@ -16,6 +16,7 @@ if (process.env.NODE_ENV==='development') {
   db.authenticate().then(()=>{console.log('Db connected')}).catch((error)=>{
       console.error('error',error)
   })
+  app.use(cors())
   app.use(express.json());
   app.use('/users',require('./routes/user'))
   app.use('/match',require('./routes/match'))
@@ -79,4 +80,4 @@ const data= async()=>{
 
 const PORT = process.env.PORT || 5000
 
-http.listen(PORT,console.log(`Server running on port ${PORT}`))
+http.listen(5000,console.log(`Server running on port 5000`))

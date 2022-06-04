@@ -11,14 +11,15 @@ router.post('/add/',util.authenticateToken,async(req,res)=>{
         requirements:req.body.requirements
     }
     const newcompetition = await competitionService.AddCompetition(req.user.id,competition)
+    console.log('competition',newcompetition)
     res.send(JSON.parse(JSON.stringify(newcompetition))).status(201)
 })
-router.get('/:id',util.authenticateToken,async(req,res)=>{
+router.get('competition/:id',util.authenticateToken,async(req,res)=>{
     const competition = await competitionService.getComp(req.params.id)
     res.send(JSON.parse(JSON.stringify(competition))).status(201)
 })
 router.get('/all/',util.authenticateToken,async(req,res)=>{
-    const competitions = await competitionService.getAllComp(req.user.id)
+        const competitions = await competitionService.getAllComp(req.user.id)
     res.send(JSON.parse(JSON.stringify(competitions))).status(201)
 })
 router.delete('/delete/:id',util.authenticateToken,async(req,res)=>{

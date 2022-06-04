@@ -1,10 +1,11 @@
 const model = require('../models/models')
 module.exports.AddMatch=async(match)=>{
 return model.match.create({
-    compid:match.compid,
+    compId:match.compId,
     date:match.date,
-    status:match.status
-         }).then((match)=>{return match}).catch((err)=>{return err})
+    status:"UPCOMING",
+    time:match.time,
+         }).then((match)=>{return match}).catch((err)=>{console.error(err)})
 
 }
 module.exports.RemoveMatch = async(matchid)=>{
@@ -36,10 +37,16 @@ module.exports.getMatch = async(id)=>{
     }
 }
 module.exports.getAllMatches=async(compId)=>{
-    return model.match.findAll({
+    const match = await  model.match.findAll({
         where:{
             compId:compId
         }
     })
-
+    if (match === null) {
+        return null
+    }
+    else{
+        return match;
+    }
+    
 }
