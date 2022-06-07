@@ -9,10 +9,18 @@ const redis = require('redis');
 const socketio = require('socket.io')
 const io = socketio(http);
 const db  = require('./database')
+const redisServer = require('./redis-server')
 if (process.env.NODE_ENV==='development') {
     app.use(morgan('dev'))
 }
-
+redisServer.server.open()
+.then(()=> {
+    console.log(`Redis Server started on port ${PORT}`);
+    server.on("connection", ()=> {
+        console.log("A NEW REDIS CLIENT CONNECTED");
+    });
+})
+.catch(e=> console.log(`REDIS SERVER START ERROR: ${e.message}`));
   db.authenticate().then(()=>{console.log('Db connected')}).catch((error)=>{
       console.error('error',error)
   })
