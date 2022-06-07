@@ -1,3 +1,4 @@
+const { use } = require('passport');
 const model = require('../models/models')
 module.exports.findAllUsers = async()=>{
 return model.user.findAll();
@@ -10,6 +11,19 @@ module.exports.findUser = async(id)=>{
     else{
         return user;
     }
+}
+module.exports.findUserByEmail = async(email)=>{
+  const user = await model.user.findOne({
+    where:{
+      email:email
+    }
+  })
+  if(user===null){
+    return null
+  }
+  else{
+    return user
+  }
 }
 module.exports.addUser = async(user)=>{
 return model.user.create({

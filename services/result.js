@@ -1,18 +1,20 @@
 const model = require('../models/models')
 module.exports.AddResult=async(matchId,UserId,score)=>{
-    model.result.Create({
+   return model.result.create({
         matchId:matchId,
         userId:UserId,
         score:score
-    })
+    }).then((response)=>{
+        return response;
+    }).catch(err=>console.error(err))
 }
 module.exports.RemoveResult=async(id)=>{
-model.result.destroy({where:{
+return model.result.destroy({where:{
     id:id
 }})
 }
 module.exports.UpdateResult=async(id,score)=>{
-    model.result.update({
+    return model.result.update({
         score:score
     },{
         where:{
@@ -21,7 +23,7 @@ module.exports.UpdateResult=async(id,score)=>{
     })
 }
 module.exports.getAllUserResults=async(userid)=>{
-    model.result.findAll({
+    return model.result.findAll({
         where:{
             userId:userid
         }
@@ -32,7 +34,7 @@ module.exports.getAllUserResults=async(userid)=>{
     })
 }
 module.exports.getAllMatchResults=async(matchId)=>{
-    model.result.findAll({
+    return model.result.findAll({
         where:{
             matchId:matchId
         }

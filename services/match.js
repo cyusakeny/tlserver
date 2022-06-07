@@ -28,7 +28,12 @@ module.exports.UpdateMatch = async(matchid,matchData)=>{
     })
 }
 module.exports.getMatch = async(id)=>{
-    const match = await model.match.findByPk(id);
+    const match = await model.match.findByPk(id,{
+        include: [
+          {
+            model: model.user,
+          },
+        ]});
     if (match === null) {
         return null
     }
