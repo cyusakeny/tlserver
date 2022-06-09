@@ -19,7 +19,7 @@ redisServer.server.open()
     console.log(`Redis Server started on port ${redisServer.PORT}`);
     server.on("connection", ()=> {
         console.log("A NEW REDIS CLIENT CONNECTED");
-    });
+    })
 })
 .catch(e=> console.log(`REDIS SERVER START ERROR: ${e.message}`));
   db.authenticate().then(()=>{console.log('Db connected')}).catch((error)=>{
