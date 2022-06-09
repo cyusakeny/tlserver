@@ -55,3 +55,16 @@ module.exports.getAllMatches=async(compId)=>{
     }
     
 }
+module.exports.getAllByStatus = async(status)=>{
+    const match = await model.match.findAll({
+        where:{
+            status:status
+        },
+        include:{
+            model:model.competition,
+            as:'competition'
+        }
+    })
+    if(match===null) return null
+    else return match;
+}

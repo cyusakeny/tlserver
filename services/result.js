@@ -13,12 +13,13 @@ return model.result.destroy({where:{
     id:id
 }})
 }
-module.exports.UpdateResult=async(id,score)=>{
+module.exports.UpdateResult=async(matchId,userId,score)=>{
     return model.result.update({
         score:score
     },{
         where:{
-            id:id
+            matchId:matchId,
+            userId:userId
         }
     })
 }

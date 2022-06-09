@@ -42,6 +42,15 @@ router.get('/all/:id',async(req,res)=>{
         res.send('Empty').status(200)
     }
 })
+router.get('/live/',async(req,res)=>{
+const matches = await matchservice.getAllByStatus('LIVE')
+if(matches!==null){
+    res.send(JSON.parse(JSON.stringify(matches))).status(201)
+}
+else{
+    res.send('Empty').status(200)
+}
+})
 router.put('/update/:id',async(req,res)=>{
     const match = {
         status:req.body.status,
