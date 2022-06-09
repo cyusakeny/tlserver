@@ -4,8 +4,8 @@
   "description": "Typing lord server for node js",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production  node app.js",
-    "dev": "cross-env NODE_ENV=development nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "CyusaKeny",
   "license": "MIT",
