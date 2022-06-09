@@ -8,5 +8,6 @@ const db = new Sequelize('d1fal5qid7h6fr', 'xxbjyxhxyqzwqw', '7dfc876ad0148d3d15
       require: true,
       rejectUnauthorized: false
     }
+    }
   });
 module.exports = db;
