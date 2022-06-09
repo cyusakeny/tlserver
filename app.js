@@ -28,7 +28,9 @@ const db  = require('./database')
   app.use('/result',require('./routes/result'))
   app.use('/progress',require('./routes/progress'))
 
-  const client = redis.createClient();
+  const client = redis.createClient({
+      url:'redis://default:tslsG6Y38HbWzgMnFRAMLnF98SOEN8zm@redis-17597.c302.asia-northeast1-1.gce.cloud.redislabs.com:17597'
+  });
 client.connect();
 client.on('error', err => console.log('REDIS ERROR: ', err));
 client.on("connect", ()=> console.log("REDIS CLIENT CONNECTED TO SERVER"));
@@ -82,4 +84,4 @@ const data= async()=>{
 
 const PORT = process.env.PORT || 5000
 
-http.listen(PORT,console.log(`Server running on port ${PORT}`))
+http.listen(5000,console.log(`Server running on port ${PORT}`))
