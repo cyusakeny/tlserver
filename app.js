@@ -41,7 +41,7 @@ redisServer.server.open()
 
   const client = redis.createClient({
     host: 'localhost',
-    port: 4600
+    port: process.env.REDIS_URL || 4600
 });
 client.connect();
 client.on('error', err => console.log('REDIS ERROR: ', err));
@@ -96,4 +96,4 @@ const data= async()=>{
 
 const PORT = process.env.PORT || 5000
 
-http.listen(5000,console.log(`Server running on port 5000`))
+http.listen(PORT,console.log(`Server running on port 5000`))
