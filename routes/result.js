@@ -14,4 +14,9 @@ router.post('/add/:match',util.authenticateToken,async(req,res)=>{
     const newresult = await resultService.AddResult(req.params.match,req.user.id,req.body.score)
     res.send(JSON.parse(JSON.stringify(newresult))).status(201)
 })
+router.post('/update/:match',util.authenticateToken,async(req,res)=>{
+    const updateResult = await resultService.UpdateResult(req.params.match,req.user.id,req.body.score)
+    console.log('update:',updateResult)
+    res.send('User saved').status(201)
+})
 module.exports = router

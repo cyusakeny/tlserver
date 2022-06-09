@@ -14,7 +14,7 @@ router.post('/add/',util.authenticateToken,async(req,res)=>{
     console.log('competition',newcompetition)
     res.send(JSON.parse(JSON.stringify(newcompetition))).status(201)
 })
-router.get('competition/:id',util.authenticateToken,async(req,res)=>{
+router.get('/competition/:id',util.authenticateToken,async(req,res)=>{
     const competition = await competitionService.getComp(req.params.id)
     res.send(JSON.parse(JSON.stringify(competition))).status(201)
 })

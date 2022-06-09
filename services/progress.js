@@ -17,15 +17,15 @@ module.exports.RemoveProgress = async(id)=>{
         }
     })
 }
-module.exports.UpdateProgress = async(progressId,level)=>{
+module.exports.UpdateProgress = async(userId,level)=>{
     return model.progress.update({
         level:level,
     },{
         where:{
-            id:progressId
+            userId:userId
         }
     }).then(async()=>{
-return model.progress.findByPk(progressId)
+return model.progress.findByPk(userId)
     })
 }
 module.exports.getProgress = async(id)=>{

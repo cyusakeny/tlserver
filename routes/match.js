@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const matchservice = require('../services/match')
+const userservice = require('../services/user')
+const resultservice = require('../services/result')
 router.post('/add',async(req,res)=>{
     console.log(req.body.status)
     const match = {
@@ -10,9 +12,18 @@ router.post('/add',async(req,res)=>{
         time:req.body.time
     }
     const newmatch= await matchservice.AddMatch(match)
-    res.send(JSON.parse(JSON.stringify(newmatch))).status(200)
+    const jsonnewmatch =  JSON.parse(JSON.stringify(newmatch))
+    const users = req.body.users
+    if(users.length!==0){
+        users.map(async(users)=>{
+          const player = await userservice.findUserByEmail(users)
+          const jsonplayer = JSON.parse(JSON.stringify(player))
+          const result = await resultservice.AddResult(jsonnewmatch.id,jsonplayer.id,'0')
+        })
+    }
+    res.send(jsonnewmatch).status(200)
 })
-router.get('match/:id',async(req,res)=>{
+router.get('/match/:id',async(req,res)=>{
 const match = await matchservice.getMatch(req.params.id)
 if(match!==null){
     res.send(JSON.parse(JSON.stringify(match))).status(201)
@@ -30,6 +41,15 @@ router.get('/all/:id',async(req,res)=>{
     else{
         res.send('Empty').status(200)
     }
+})
+router.get('/live/',async(req,res)=>{
+const matches = await matchservice.getAllByStatus('LIVE')
+if(matches!==null){
+    res.send(JSON.parse(JSON.stringify(matches))).status(201)
+}
+else{
+    res.send('Empty').status(200)
+}
 })
 router.put('/update/:id',async(req,res)=>{
     const match = {

@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
 const cors = require('cors')
+const schedule = require('node-schedule')
 dotenv.config({path:'./config/config.env'})
 const app = express()
 const http = require('http').createServer(app)
@@ -9,19 +10,34 @@ const redis = require('redis');
 const socketio = require('socket.io')
 const io = socketio(http);
 const db  = require('./database')
+const redisServer = require('./redis-server')
 if (process.env.NODE_ENV==='development') {
     app.use(morgan('dev'))
 }
-
+redisServer.server.open()
+.then(()=> {
+    console.log(`Redis Server started on port ${redisServer.PORT}`);
+    server.on("connection", ()=> {
+        console.log("A NEW REDIS CLIENT CONNECTED");
+    });
+})
+.catch(e=> console.log(`REDIS SERVER START ERROR: ${e.message}`));
   db.authenticate().then(()=>{console.log('Db connected')}).catch((error)=>{
       console.error('error',error)
   })
+  const j = schedule.scheduleJob('*/20 * * * *',async()=>{
+    const [result, meta] = await db.query("UPDATE matches set status='LIVE' where CAST(date AS DATE)=CAST(NOW() AS DATE)")
+    console.log('meta1:',meta)
+    const [results,metadata] = await db.query("UPDATE matches set status='DONE' where CAST(date AS DATE)<CAST(NOW() AS DATE)")   
+    console.log('meta2',metadata)
+})
   app.use(cors())
   app.use(express.json());
   app.use('/users',require('./routes/user'))
   app.use('/match',require('./routes/match'))
   app.use('/competition',require('./routes/competition'))
   app.use('/result',require('./routes/result'))
+  app.use('/progress',require('./routes/progress'))
 
   const client = redis.createClient({
     host: 'localhost',
@@ -34,7 +50,7 @@ io.on("connection",(socket) => {
     socket.on("Data1", async( speed ,accuracy,roomid)=>{
         console.log('our room:',roomid)
         if(speed!=null && accuracy!=null){
-            let scores=(speed+accuracy)/1000
+            let scores=(speed+accuracy)/100
             client.ZADD("scores", {score: scores, value: 'drift'});
             client.ZADD("speeds",{score:speed, value:'drift'});
             client.ZADD("accuracy",{score:accuracy,value:'drift'});
