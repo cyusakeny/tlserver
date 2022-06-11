@@ -51,9 +51,9 @@ io.on("connection",(socket) => {
         } 
     })
     socket.on("CreateRoom",async(id)=>{
-        const room = "room"+id
+        console.log('Room:',id)
         await socket.leaveAll()
-        socket.join(room)
+        socket.join(id)
     })
     socket.on("disconnect",()=>{
 console.log("Disconnected");
@@ -82,6 +82,6 @@ const data= async()=>{
 }
 
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 6000
 
 http.listen(PORT,console.log(`Server running on port ${PORT}`))
