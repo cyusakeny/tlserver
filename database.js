@@ -5,10 +5,10 @@ const db = new Sequelize('d1fal5qid7h6fr', 'xxbjyxhxyqzwqw',
     dialect:'postgres',
     port:5432,
     dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-      }
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+    }
   });
 module.exports = db;
