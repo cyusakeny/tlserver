@@ -65,6 +65,9 @@ const User = db.define('user',{
     gender:{
         type:Sequelize.ENUM('FEMALE','MALE'),
         allowNull:false
+    },
+    image:{
+        type:Sequelize.STRING
     }
 })
 const Competition = db.define('competition',{

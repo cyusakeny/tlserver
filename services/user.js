@@ -32,7 +32,8 @@ email:user.email,
 firstname:user.firstname,
 lastname:user.lastname,
 password:user.password,
-gender:user.gender
+gender:user.gender,
+image:user.image
 }).then((user)=>{
     return user
 }).catch((error)=>{
@@ -41,10 +42,10 @@ gender:user.gender
 }
 module.exports.UpdateUser = async(id,UserData)=>{
 return  model.user.update({ 
-  lastname: UserData.lastName,
-  firstname:UserData.firstname,
-  password:UserData.password,
-  username: UserData.username}, {
+  username: UserData.username,
+  image:UserData.image
+}, 
+{
       where: {
         id:id
       }

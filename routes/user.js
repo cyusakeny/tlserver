@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const userservice = require('../services/user')
 const util = require('../utils/token')
+const upload = require('../utils/upload')
 router.get('/',util.authenticateToken,async(req,res)=>{
     const users =await userservice.findAllUsers()
    res.send(JSON.parse(JSON.stringify(users))).status(201)
@@ -19,7 +20,8 @@ router.post('/add',async(req,res)=>{
         password:req.body.password,
         username:req.body.username,
         email:req.body.email,
-        gender:req.body.gender
+        gender:req.body.gender,
+        image:null
     }
     const newUser = await userservice.addUser(user)
     if(newUser){
@@ -29,16 +31,24 @@ router.post('/add',async(req,res)=>{
         res.send('User not created').status(401)
     }
 })
-router.put('/update',util.authenticateToken,async(req,res)=>{
+router.post('/update',[util.authenticateToken,upload.upload],async(req,res)=>{
+    let image = ''
+
+    if(req.file){
+    image = req.file.path
+    }
+    else{
+        let myUser = await userservice.findUser(req.user.id)
+        image = JSON.parse(JSON.stringify(myUser)).image
+    }
 const user = {
     username:req.body.username,
-    password:req.body.password,
-    lastname:req.body.lastname,
-    firstname:req.body.firstname
+    image:image
 }
-const UpdateUser = await userservice.UpdateUser(req.user.id,user)
-res.send(JSON.parse(JSON.stringify(UpdateUser))).status(201)
-})
+const UpdateUser = await userservice.UpdateUser(req.user.id,user);
+res.send(JSON.parse(JSON.stringify(UpdateUser))).status(201);
+}
+)
 router.delete('/delete/:id',async(req,res)=>{
     const user = await userservice.DeleteUser(req.params.id)
     res.send(JSON.parse(JSON.stringify(user))).status(201)
