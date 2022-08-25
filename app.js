@@ -90,4 +90,4 @@ const data= async()=>{
 
 const PORT =  process.env.PORT||6000
 
-http.listen(7000,console.log(`Server running on port 7000`))
+http.listen(PORT,console.log(`Server running on port ${PORT}`))
